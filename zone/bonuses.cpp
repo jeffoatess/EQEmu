@@ -669,6 +669,38 @@ void Mob::ApplyAABonuses(const AA::Rank &rank, StatBonuses *newbon)
 			/*if (base1 > newbon->movementspeed)	//or should we use a total value?
 				newbon->movementspeed = base1;*/
 			break;
+		case SpellEffect::AttackSpeed:
+		{
+			if ((base_value - 100) > 0) { // Haste
+				if (newbon->haste < 0)
+					break; // Slowed - don't apply haste
+				if ((base_value - 100) > newbon->haste) {
+					newbon->haste = base_value - 100;
+				}
+			}
+			else if ((base_value - 100) < 0) { // Slow
+				int real_slow_value = (100 - base_value) * -1;
+				real_slow_value -= (real_slow_value * GetSlowMitigation() / 100);
+				if (real_slow_value < newbon->haste)
+					newbon->haste = real_slow_value;
+			}
+			break;
+		}
+		case SpellEffect::AttackSpeed3:
+		{
+			if (base_value < 0) { // Slow
+				int real_slow_value = base_value;
+				real_slow_value -= (real_slow_value * GetSlowMitigation() / 100);
+				if (real_slow_value < newbon->hastetype3)
+					newbon->hastetype3 = real_slow_value;
+			}
+			else if (base_value > 0) { // Overhaste
+				if (base_value > newbon->hastetype3) {
+					newbon->hastetype3 = base_value;
+				}
+			}
+			break;
+		}
 		case SpellEffect::STR:
 			newbon->STR += base_value;
 			break;

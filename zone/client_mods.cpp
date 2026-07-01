@@ -984,16 +984,17 @@ int Client::CalcHaste()
 		h = cap;
 	}
 	// 51+ 25 (despite there being higher spells...), 1-50 10
+	const int total_hastetype3 = spellbonuses.hastetype3 + itembonuses.hastetype3 + aabonuses.hastetype3;
 	if (level > 50 || RuleB(Character, IgnoreLevelBasedHasteCaps)) { // 51+
 		cap = RuleI(Character, Hastev3Cap);
-		if (spellbonuses.hastetype3 > cap) {
+		if (total_hastetype3 > cap) {
 			h += cap;
 		} else {
-			h += spellbonuses.hastetype3;
+			h += total_hastetype3;
 		}
 	}
 	else {   // 1-50
-		h += spellbonuses.hastetype3 > 10 ? 10 : spellbonuses.hastetype3;
+		h += total_hastetype3 > 10 ? 10 : total_hastetype3;
 	}
 	h += extra_haste;	//GM granted haste.
 	Haste = 100 + h;

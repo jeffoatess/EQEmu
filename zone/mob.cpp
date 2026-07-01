@@ -5477,6 +5477,8 @@ int Mob::GetHaste()
 		h = cap;
 
 	// 51+ 25 (despite there being higher spells...), 1-50 10
+	const int total_hastetype3 = spellbonuses.hastetype3 + itembonuses.hastetype3 + aabonuses.hastetype3;
+
 	if (
 		(IsNPC() && !RuleB(NPC, NPCIgnoreLevelBasedHasteCaps)) ||
 		(IsBot() && !RuleB(Bots, BotsIgnoreLevelBasedHasteCaps)) ||
@@ -5485,19 +5487,19 @@ int Mob::GetHaste()
 		if (level > 50) { // 51+
 			cap = (IsNPC() ? RuleI(NPC, NPCHastev3Cap) : IsBot() ? RuleI(Bots, BotsHastev3Cap) : IsMerc() ? RuleI(Mercs, MercsHastev3Cap) : RuleI(Character, Hastev3Cap));
 
-			if (spellbonuses.hastetype3 > cap) {
+			if (total_hastetype3 > cap) {
 				h += cap;
 			}
 			else {
-				h += spellbonuses.hastetype3;
+				h += total_hastetype3;
 			}
 		}
 		else { // 1-50
-			h += spellbonuses.hastetype3 > 10 ? 10 : spellbonuses.hastetype3;
+			h += total_hastetype3 > 10 ? 10 : total_hastetype3;
 		}
 	}
 	else {
-		h += spellbonuses.hastetype3;
+		h += total_hastetype3;
 	}
 
 	h += extra_haste;	//GM granted haste.
