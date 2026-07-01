@@ -3636,6 +3636,24 @@ int64 Mob::ReduceDamage(int64 damage)
 		}
 	}
 
+	int total_passive_melee_mitigation =
+		itembonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_PERCENT] +
+		aabonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_PERCENT];
+
+	if (total_passive_melee_mitigation) {
+		int64 damage_to_reduce = damage * total_passive_melee_mitigation / 100;
+		int max_absorb_per_hit = std::max(
+			itembonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_MAX_DMG_ABSORB_PER_HIT],
+			aabonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_MAX_DMG_ABSORB_PER_HIT]
+		);
+
+		if (max_absorb_per_hit && damage_to_reduce > max_absorb_per_hit) {
+			damage_to_reduce = max_absorb_per_hit;
+		}
+
+		damage -= damage_to_reduce;
+	}
+
 	if (spellbonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_PERCENT] && !DisableMeleeRune) {
 		slot = spellbonuses.MitigateMeleeRune[SBIndex::MITIGATION_RUNE_BUFFSLOT];
 		if (slot >= 0)

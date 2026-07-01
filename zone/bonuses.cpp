@@ -1783,6 +1783,15 @@ void Mob::ApplyAABonuses(const AA::Rank &rank, StatBonuses *newbon)
 			newbon->Amplification += base_value;
 			break;
 
+		case SpellEffect::MitigateMeleeDamage:
+		{
+			newbon->MitigateMeleeRune[SBIndex::MITIGATION_RUNE_PERCENT] += base_value;
+			if (limit_value > newbon->MitigateMeleeRune[SBIndex::MITIGATION_RUNE_MAX_DMG_ABSORB_PER_HIT]) {
+				newbon->MitigateMeleeRune[SBIndex::MITIGATION_RUNE_MAX_DMG_ABSORB_PER_HIT] = limit_value;
+			}
+			break;
+		}
+
 		case SpellEffect::MitigateSpellDamage:
 		{
 			newbon->MitigateSpellRune[SBIndex::MITIGATION_RUNE_PERCENT] += base_value;
