@@ -1252,6 +1252,18 @@ void Mob::ApplyAABonuses(const AA::Rank &rank, StatBonuses *newbon)
 			break;
 		}
 
+		case SpellEffect::MinDamageModifier: {
+			// Bad data or unsupported new skill
+			if (limit_value > EQ::skills::HIGHEST_SKILL)
+				break;
+			int skill = limit_value == ALL_SKILLS ? EQ::skills::HIGHEST_SKILL + 1 : limit_value;
+			if (base_value < 0 && newbon->MinDamageModifier[skill] > base_value)
+				newbon->MinDamageModifier[skill] = base_value;
+			else if (base_value > 0 && newbon->MinDamageModifier[skill] < base_value)
+				newbon->MinDamageModifier[skill] = base_value;
+			break;
+		}
+
 		case SpellEffect::SlayUndead: {
 			if (newbon->SlayUndead[SBIndex::SLAYUNDEAD_DMG_MOD] < base_value) {
 				newbon->SlayUndead[SBIndex::SLAYUNDEAD_DMG_MOD] = base_value; // Rate

@@ -6729,8 +6729,8 @@ int16 Mob::GetMeleeMinDamageMod_SE(uint16 skill)
 {
 	int64 dmg_mod = 0;
 
-	dmg_mod = itembonuses.MinDamageModifier[skill] + spellbonuses.MinDamageModifier[skill] +
-		itembonuses.MinDamageModifier[EQ::skills::HIGHEST_SKILL + 1] + spellbonuses.MinDamageModifier[EQ::skills::HIGHEST_SKILL + 1];
+	dmg_mod = itembonuses.MinDamageModifier[skill] + spellbonuses.MinDamageModifier[skill] + aabonuses.MinDamageModifier[skill] +
+		itembonuses.MinDamageModifier[EQ::skills::HIGHEST_SKILL + 1] + spellbonuses.MinDamageModifier[EQ::skills::HIGHEST_SKILL + 1] + aabonuses.MinDamageModifier[EQ::skills::HIGHEST_SKILL + 1];
 
 	if(dmg_mod < -100)
 		dmg_mod = -100;
